@@ -1,0 +1,15 @@
+# Xcode / build
+DerivedData/
+build/
+*.xcuserstate
+xcuserdata/
+.DS_Store
+
+# XcodeGen generates this from project.yml
+WeatherApp.xcodeproj/
+
+# Playwright MCP
+.playwright-mcp/
+
+# Local Claude tooling / imported skills (may carry org credentials)
+.claude/
