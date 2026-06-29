@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>Weather</string>
+	<string>Tertiary Weather</string>
 	<key>CFBundleName</key>
 	<string>WeatherApp</string>
 	<key>CFBundleIdentifier</key>
@@ -20,6 +20,8 @@
 	<true/>
 	<key>UILaunchScreen</key>
 	<dict/>
+	<key>CFBundleIconName</key>
+	<string>AppIcon</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -44,5 +46,7 @@
 	<string>https://geocoding-api.open-meteo.com/v1/search</string>
 	<key>OpenMeteoAPIKey</key>
 	<string></string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>

@@ -1,10 +1,11 @@
-# Weather
+# Tertiary Weather
 
 A native **iOS** weather app built with **SwiftUI**. Search for any city or place, pull live
 current conditions from the free **[Open-Meteo](https://open-meteo.com)** API, and see the
-location pinned on an **Apple Map** — all behind a clean bottom-tab navigation.
+location pinned on an **Apple Map** — all behind a clean bottom-tab navigation. Universal
+(iPhone + iPad), submitted to the **App Store** as *Tertiary Weather*.
 
-![Weather — search screen](screenshot.png)
+![Tertiary Weather — search screen](screenshot.png)
 
 ## Features
 
