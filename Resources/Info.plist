@@ -48,5 +48,7 @@
 	<string></string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Tertiary Weather uses your location to show the current weather, local time, and map for where you are. Your location never leaves your device except to fetch the forecast.</string>
 </dict>
 </plist>

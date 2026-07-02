@@ -13,12 +13,19 @@ location pinned on an **Apple Map** — all behind a clean bottom-tab navigation
 
 ## Features
 
+- 📍 **Auto-detect current location** — on launch the app finds where you are (CoreLocation +
+  reverse geocoding) and shows the local weather and time; a `location` button re-detects on demand.
 - 🔎 **Search any city or place** — free-text geocoding via Open-Meteo.
 - 🌡️ **Live current weather** — temperature, feels-like, humidity, wind, and a WMO
   condition label with a matching SF Symbol (day/night aware).
+- 🕐 **Live local time** — a running clock for the loaded place, in its own time zone.
+- 🌍 **World Time** — a world-clock tab with live times for your chosen cities
+  (add/remove/reorder, day/night icons, UTC-offset vs your device).
 - 🗺️ **Location on Apple Maps** — the resolved place is dropped as a `Marker` on a MapKit map.
-- 🧭 **Bottom-tab navigation** — Weather, Feedback (Title + Message → WhatsApp), and About.
-- 🌗 **Light & dark mode** — semantic `Theme` color tokens backed by Asset Catalog variants.
+- 🧭 **Bottom-tab navigation** — Weather, World Time, Feedback (→ WhatsApp), and About.
+- 🌦️ **Weather-concept theme** — the sky *is* the theme: a dynamic gradient background that
+  matches the current condition (clear/cloudy/rain/snow/storm, day and night variants),
+  with frosted-material cards on top.
 - ♿ **HIG-friendly** — Dynamic Type, SF Symbols, 44pt hit targets, VoiceOver labels.
 
 ## Tech Stack
@@ -36,14 +43,16 @@ location pinned on an **Apple Map** — all behind a clean bottom-tab navigation
 ```
 Sources/
 ├── WeatherApp.swift        # @main App entry
-├── MainTabView.swift       # Root TabView: Weather / Feedback / About
-├── WeatherView.swift       # Search field, weather card, MapKit map
-├── WeatherViewModel.swift  # @Observable: idle / loading / loaded / failed
+├── MainTabView.swift       # Root TabView: Weather / World Time / Feedback / About
+├── WeatherView.swift       # Search field, weather card + live clock, MapKit map
+├── WeatherViewModel.swift  # @Observable: idle / loading / loaded / failed + locate-me
 ├── WeatherService.swift    # Open-Meteo geocoding + forecast (async/await)
 ├── WeatherModels.swift     # Codable models + WMO code → label/symbol
+├── LocationProvider.swift  # One-shot async CoreLocation wrapper
+├── WorldClockView.swift    # World Time tab: live city clocks + picker
 ├── FeedbackView.swift      # Title + Message → WhatsApp (wa.me)
 ├── AboutView.swift         # App / developer / data-source / version cards
-└── Theme.swift             # Central color tokens + card surface
+└── Theme.swift             # Color tokens, card surfaces + weather sky gradients
 Resources/
 ├── Info.plist              # Endpoints + optional OpenMeteoAPIKey
 └── Assets.xcassets         # Accent / Card / Background color sets, AppIcon

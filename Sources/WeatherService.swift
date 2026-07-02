@@ -67,7 +67,8 @@ struct WeatherService {
         let (data, response) = try await session.data(from: url)
         try Self.validate(response)
         let decoded = try JSONDecoder().decode(ForecastResponse.self, from: data)
-        return WeatherResult(place: place, current: decoded.current, units: decoded.currentUnits)
+        return WeatherResult(place: place, current: decoded.current,
+                             units: decoded.currentUnits, timezoneID: decoded.timezone)
     }
 
     /// One-shot: text query → resolved weather + location.

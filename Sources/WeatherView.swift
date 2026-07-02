@@ -17,6 +17,8 @@ struct WeatherView: View {
                         hint
                     case .loading:
                         ProgressView("Fetching weather…")
+                            .tint(.white)
+                            .foregroundStyle(.white.opacity(0.9))
                             .frame(maxWidth: .infinity, minHeight: 160)
                     case .failed(let message):
                         errorCard(message)
@@ -27,8 +29,10 @@ struct WeatherView: View {
                 }
                 .padding(20)
             }
-            .background(Theme.bg)
+            .background(Theme.sky(for: model.result).ignoresSafeArea())
             .navigationTitle("Weather")
+            .toolbarColorScheme(.dark, for: .navigationBar)
+            .task { await model.autoLocateIfNeeded() }
         }
     }
 
@@ -46,19 +50,24 @@ struct WeatherView: View {
                 }
                 .accessibilityLabel("Clear search")
             }
+            Divider().frame(height: 20)
+            Button { Task { await model.locateMe() } } label: {
+                Image(systemName: "location.fill").foregroundStyle(Theme.accent)
+            }
+            .accessibilityLabel("Use my current location")
         }
         .padding(14)
-        .background(Theme.card, in: Theme.cardShape)
+        .background(.ultraThinMaterial, in: Theme.cardShape)
     }
 
     private var hint: some View {
         VStack(spacing: 12) {
             Image(systemName: "cloud.sun.fill")
                 .font(.system(size: 52))
-                .foregroundStyle(Theme.accent)
-            Text("Search for a place to see its current weather and location on the map.")
+                .symbolRenderingMode(.multicolor)
+            Text("Search for a place — or tap \(Image(systemName: "location.fill")) to use your current location — to see its weather, local time, and map.")
                 .font(.callout)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.white.opacity(0.9))
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
@@ -70,7 +79,7 @@ struct WeatherView: View {
             Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(.orange)
             Text(message).font(.callout)
         }
-        .cardSurface()
+        .skyCardSurface()
     }
 }
 
@@ -99,6 +108,16 @@ private struct WeatherCard: View {
                 Text(result.condition.label).font(.headline).foregroundStyle(.secondary)
             }
 
+            if let tz = result.timeZone {
+                TimelineView(.periodic(from: .now, by: 1)) { context in
+                    Label(Self.localTime(context.date, in: tz), systemImage: "clock.fill")
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(.secondary)
+                        .monospacedDigit()
+                }
+                .accessibilityLabel("Local time")
+            }
+
             Divider()
 
             HStack {
@@ -111,7 +130,16 @@ private struct WeatherCard: View {
                        "\(Int(result.current.windSpeed.rounded())) \(result.units.windSpeed)")
             }
         }
-        .cardSurface()
+        .skyCardSurface()
+    }
+
+    /// "Thu, 3 Jul, 2:41:07 pm" rendered in the place's own time zone.
+    private static func localTime(_ date: Date, in tz: TimeZone) -> String {
+        var style = Date.FormatStyle.dateTime
+            .weekday(.abbreviated).day().month(.abbreviated)
+            .hour().minute().second()
+        style.timeZone = tz
+        return date.formatted(style)
     }
 
     private var subtitle: String? {

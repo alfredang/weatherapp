@@ -30,9 +30,10 @@ struct GeoPlace: Decodable, Identifiable {
 struct ForecastResponse: Decodable {
     let current: CurrentWeather
     let currentUnits: CurrentUnits
+    let timezone: String?            // IANA id, resolved by `timezone=auto`
 
     enum CodingKeys: String, CodingKey {
-        case current
+        case current, timezone
         case currentUnits = "current_units"
     }
 }
@@ -100,7 +101,14 @@ struct WeatherResult {
     let place: GeoPlace
     let current: CurrentWeather
     let units: CurrentUnits
+    let timezoneID: String?
+
     var condition: WeatherCondition {
         WeatherCondition.from(code: current.weatherCode, isDay: current.isDay == 1)
+    }
+
+    /// The place's local time zone (from the forecast response), for the live clock.
+    var timeZone: TimeZone? {
+        timezoneID.flatMap { TimeZone(identifier: $0) }
     }
 }

@@ -1,11 +1,13 @@
 import SwiftUI
 
-/// Root bottom-tab navigation (house style): Weather + Feedback + About.
+/// Root bottom-tab navigation (house style): Weather + World Time + Feedback + About.
 struct MainTabView: View {
     var body: some View {
         TabView {
             WeatherView()
                 .tabItem { Label("Weather", systemImage: "cloud.sun.fill") }
+            WorldClockView()
+                .tabItem { Label("World Time", systemImage: "globe") }
             FeedbackView()
                 .tabItem { Label("Feedback", systemImage: "bubble.left.and.bubble.right.fill") }
             AboutView()
